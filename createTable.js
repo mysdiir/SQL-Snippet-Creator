@@ -1,3 +1,7 @@
+var columnID = null;
+var columnValueSettingsPanel = document.getElementById('columnValueSettingsPanel');
+var createColumnBtn = document.getElementById('createColumnBtn');
+
 function getColumnNameByTextField() {
     var columnName = document.getElementById('addColumnTextField').value;
     return columnName;
@@ -8,9 +12,28 @@ function getDatatypeByDropDown() {
     return datatype;
 }
 
-function creteNewTable() {
+function getID() {
 
-    var givenParentContainer = document.getElementById('tablePanel');
+    var id = $(function() {
+        $('li').click(function(){
+            id = ( $(this).attr('id'));
+            return id;
+        })
+    })
+
+}
+
+function getDatatype() {
+
+    let datatype = document.getElementById(getID());
+    datatype = datatype.innerHTML;
+    return datatpye;
+}
+
+
+createColumnBtn.addEventListener("click", function(){
+
+    var givenParentContainer = document.getElementById('columnPanel');
     var cssClassName = 'shownTable';
 
 
@@ -19,66 +42,95 @@ function creteNewTable() {
     
      // check if column exists
     if (currentElement !== null ) {
-        alert("Warning! Column already exists")
-    } else {
+       alert("Warning! Column already exists")
+        } else {
 
-        // create div   
-        var newDIV = document.createElement('div');
-        newDIV.setAttribute('id', getColumnNameByTextField() + '_div');
-        newDIV.setAttribute('class', 'testDIV'),
-        givenParentContainer.appendChild(newDIV);
+            // create div   
+            var newDIV = document.createElement('div');
+            newDIV.setAttribute('id', getColumnNameByTextField() + '_div');
+            newDIV.setAttribute('class', 'ulContainer'),
+            givenParentContainer.appendChild(newDIV);        
 
-        // create table
-        var newTable = document.createElement('table');
-        newTable.setAttribute('id', getColumnNameByTextField() + '_table');
-        newTable.setAttribute('class', 'shownClass'),
-        newDIV.appendChild(newTable);
+            // create li
+            var newLI = document.createElement('li');
+            newLI.setAttribute('id', getColumnNameByTextField() + '_columnName');
+            newLI.innerHTML = getColumnNameByTextField();
+            newDIV.appendChild(newLI);
 
-        // create tr
-        var newTableRow = document.createElement('tr');
-        newTableRow.setAttribute('id', getColumnNameByTextField() + '_tr');
-        newTableRow.setAttribute('class', 'shownClass'),
-        newTableRow.setAttribute('onclick', 'addDatatypePanel()');
-        newTableRow.innerHTML = getColumnNameByTextField();
-        newTable.appendChild(newTableRow);
+            // create li
+            var newLI = document.createElement('li');
+            newLI.setAttribute('id', getColumnNameByTextField() + '_datatype');
+            newLI.setAttribute('onclick', 'toggleValuePanel()');
+            newLI.innerHTML = getDatatypeByDropDown();
+            newDIV.appendChild(newLI);  
+        }      
+});
 
-        // create td
-        var newTableData = document.createElement('td');
-        newTableData.setAttribute('id', getColumnNameByTextField() + '_td');
-        newTableData.setAttribute('class', 'shownClass'),
-        newTableData.setAttribute('onclick', 'addDatatypePanel()');
-        newTableData.innerHTML = getDatatypeByDropDown();
-        newTable.appendChild(newTableData);
+function createDIV(datatype, parentContainer) {
+    let newDIV = createElement('div');
+    newDIV.setAttribute('id', datatype + 'div');
+    parentContainer.appendChild(newDIV);
+}
 
+function cerateHeadline(text, datatype, parentContainer) {
+    let newHeadline = createElement('h1');
+    newHeadline.setAttribute('id', datatype + '_headnline');
+    newHeadline.textContent = text;
+    parentContainer.appendChild(newHeadline);
+}
+
+function createButton(id, buttonText, parentContainer) {
+    let newButton = createElement('button');
+    newButton.setAttribute('id', id + '_btn');
+    newButton.innerHTML = buttonText;
+    parentContainer.appendChild(newButton);
+}
+
+
+function createRadioButton(datatype, parentContainer, inputType, rbText) {
+
+    let newRadioButton = createElement('input');
+    newRadioButton.setAttribute('type', inputType);
+    newRadioButton.setAttribute('id', id);
+    newRadioButton.setAttribute('name', rbText);
+    newDIV.appendChild(newRadioButton);  
+}
+
+
+function toggleValuePanel() {
+
+    var datatype = getDatatype();
+
+    switch (datatype) {
+
+        case 'boolean':
+            createDIV('boolean', 'columnValueSetting');
+            cerateHeadline('Boolean', 'boolean_div');
+            createRadioButton('boolean_true', 'boolean_div' , 'radio', 'true');
+            createRadioButton('boolean_false', 'boolean_div', 'radio', 'false');
+            createButton('boolean', 'save', 'boolean_div')
+
+            break;
+        default: 
+            break;
     }
-}
-
-function addDatatypePanel() {
-
-    var $test;
-    var $datatype;
-
-    // get ID of clicked element
-    $(document).ready(function(){
-        $('td').click(function(event) {
-            $test = $(event.target);
-            $test = $(this).attr('id');
-            console.log($test);
-            
-        })   
-    });
-
-    // get text of clicked element
-    $(document).ready(function(){
-        $('td').click(function(event) {
-            $datatype = $(event.target);
-            $datatype = $(this).text();
-            console.log($datatype);
-
-        })
-    });
-    
-
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
