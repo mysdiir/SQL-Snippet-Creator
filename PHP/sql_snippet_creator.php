@@ -80,6 +80,6 @@
         <div class="snippetPanel"></div>
 
    </div>
-    <script src="../datatypePanelCreation.js"></script>
+    <script src="../JS/datatypePanelCreation.js"></script>
 </body>
 </html>
