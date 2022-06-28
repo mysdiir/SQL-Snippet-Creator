@@ -23,28 +23,12 @@
                         $_POST['db'], $_POST['table'], $_POST['port']);
 
                     $host = $dbSettings->getHost();
-                    //echo($dbSettings->getHost());
-                    //echo("<br>");
-                    
                     $user = $dbSettings->getUser();
-                    //echo($dbSettings->getUser());
-                    //echo("<br>");
-                    
                     $password = $dbSettings->getPassword();
-                    //echo($dbSettings->getPassword());
-                    //echo("<br>");
-                    
                     $db = $dbSettings->getDb();
-                    //echo($dbSettings->getDb());
-                    //echo("<br>");
-                    
                     $table = $dbSettings->getTable();
-                    //echo($dbSettings->getTable();
-                    //echo("<br>");
-                   
                     $port = $dbSettings->getPort();
-                    //echo($dbSettings->getPort());
-                    //echo("<br>");
+                    
                     $newConnection = new DBFunctions();
                     
                     $newConnection->setConn($host, $user, $password);
@@ -72,12 +56,22 @@
             <?php
                 include("valueProcession.php");
             ?>
+            <div id="valueContainer"></div>
+            
+            <div>
+                <button>prepare</button>
+            </div>
 
                 
            
         </div>
         <div class="sqlOutput" id="sqlOutput"></div>
-        <div class="snippetPanel"></div>
+        <div class="resultTablePanel">
+            <p>table in new inserted datasets</p>
+        </div>
+        <div class="snippetPanel">
+            <p>output panel for snippet</p>
+        </div>
 
    </div>
     <script src="../JS/datatypePanelCreation.js"></script>

@@ -49,7 +49,7 @@ class DBFunctions
     
                     echo("<tr>");    
                         echo ("<td>");
-                            echo ("<button id='" . $row['Field'] . "_BTN' onclick='createChar()'>" . $row['Type'] . " </button>");
+                            echo ("<button id='" . $row['Field'] . "_BTN' onclick='setUpDataValuePanel()'>" . $row['Type'] . " </button>");
                         echo ("</td>");
                     echo("</tr>");
                     
