@@ -1,12 +1,9 @@
-    const valueParent = document.getElementById('valuePanel');
-
     function resetParentPanel() {
         let parentDIV = document.getElementById("valuePanel");
         parentDIV.innerHTML = "";
     }
 
-
-    function removeBraketsOfDatatype() {
+    function getDatatypeNameAndremoveClips() {
 
         // get btnID
         let btnID = event.target.id;
@@ -16,11 +13,12 @@
         
         //console.log(typeof btnValue);
         
-        if ((btnValue !== "date") || !(btnValue !== "datetime")) {
+        //      false                   false                           false
+        if ((btnValue !== "date") && (btnValue !== "datetime") && (btnValue !== "time" )) {
             // remove clips with length (exclusivley text based) [ int(11) => int ]
             var reducedBtnValue = btnValue.substring(0, btnValue.length - 4);
             return reducedBtnValue;
-        } if ((btnValue === "date") || (btnValue === "datetime")){
+        } if ((btnValue === "date") || (btnValue === "datetime") || (btnValue == "time" )){
             var reducedBtnValue = btnValue;
             return reducedBtnValue;
             
@@ -28,52 +26,53 @@
         
     }
     
-    
     function setUpDataValuePanel() {
 
-        var reducedBtnValue = removeBraketsOfDatatype();
+        var reducedBtnValue = getDatatypeNameAndremoveClips();
+        
         switch (reducedBtnValue) {
             case "int":     createIntegralNumber();
                             break;
             case "varchar": createText();
                             break;
             case "date":    createDate();
+                            break;
+            case "time":    createTime() ;
+                            break;
             default:        break;
         }
     }   
         
     function createFormTag() {
-    let innerForm = document.createElement("form");
-    innerForm.setAttribute("method", "post");
-    innerForm.setAttribute("action", "valueProcession.php")
-    innerForm.setAttribute("id", "valueForm")
-    valuePanel.appendChild(innerForm);
-}
-
+    
+        let innerForm = document.createElement("div");
+        //innerForm.setAttribute("method", "post");
+        //innerForm.setAttribute("action", "valueProcession.php")
+        innerForm.setAttribute("id", "valueForm")
+        valuePanel.appendChild(innerForm);
+     
+    }
 
     function createText() {
 
-        resetParentPanel();      
+        resetParentPanel();
         createFormTag();
         
         let textField = document.createElement("input")
         textField.setAttribute("id", "charTextField");
-        textField.setAttribute("name", "charTextField");
+        textField.setAttribute("name", "dataValue");
         
         let charBtn = document.createElement("Button");
         charBtn.setAttribute("id", "charBtn");
+        charBtn.setAttribute("onclick", "getID()");
         charBtn.innerHTML = "Save value";
 
-        let testbox = document.createElement("p");
-        testbox.innerHTML = "text field";
-
         if(!document.getElementById("charTextField")) {
-             valueForm.appendChild(textField);
+            valueForm.appendChild(textField);
             valueForm.appendChild(charBtn);
-            valueForm.appendChild(testbox);
+            
         }
     }
-    
     
     function createIntegralNumber() {
 
@@ -83,19 +82,17 @@
         let numberField = document.createElement("input");
         numberField.setAttribute("type", "number");
         numberField.setAttribute("id", "numberField");
-        numberField.setAttribute("name", "numberField");
-        
+        numberField.setAttribute("name", "dataValue");
+       
         let numberBtn = document.createElement("Button");
         numberBtn.setAttribute("id", "numberFieldBtn");
+        numberBtn.setAttribute("onclick", "");
         numberBtn.innerHTML = "Save value";
-        
-        let testbox = document.createElement("p");
-        testbox.innerHTML = "integral number field";
-        
+                
         if (!document.getElementById("numberField")) {
             valueForm.appendChild(numberField);
             valueForm.appendChild(numberBtn);
-            valueForm.appendChild(testbox);
+            
         }
    }
    
@@ -106,15 +103,16 @@
        let number = document.createElement("input");
        number.setAttribute("type", "number");
        number.setAttribute("id", "floatPreDottedField");
-       number.setAttribute("name", "floatPreDottedField");
+       number.setAttribute("name", "dataValue");
         
        let decimal = document.createElement("input");
        decimal.setAttribute("type", "number");
        decimal.setAttribute("id", "floatPostDottedField");
-       decimal.setAttribute("name", "floatPostDottedField");
+       decimal.setAttribute("name", "dataValue");
 
        let floatingPointBtn = document.createElement("Button");
        floatingPointBtn.setAttribute("id", "numberFieldBtn");
+        floatingPointBtn.setAttribute("onclick", "getID()");
        floatingPointBtn.innerHTML = "Save value";
        
        if (document.getElementById("numberField") && 
@@ -127,7 +125,6 @@
        }
    }
    
-   
     function createDate() {
        
         resetParentPanel();
@@ -136,19 +133,17 @@
         let date = document.createElement("input");
         date.setAttribute("type", "date");
         date.setAttribute("id", "dateField");
-        date.setAttribute("name", "dateField");
+        date.setAttribute("name", "dataValue");
         
         let dateBtn = document.createElement("button");
         dateBtn.setAttribute("id", "dateBtn");
+        dateBtn.setAttribute("onclick", "getID()");
         dateBtn.innerHTML = "Save value";
-
-        let testbox = document.createElement("p");
-        testbox.innerHTML = "date field";
         
         if (!document.getElementById("dateField")) {
             valueForm.appendChild(date);
             valueForm.appendChild(dateBtn)
-            valueForm.appendChild(testbox);
+            
         }
    }
    
@@ -159,18 +154,19 @@
         let date = document.createElement("input");
         date.setAttribute("type", "date");
         date.setAttribute("id","dateField");
-        date.setAttribute("name", "datetimeField");
+        date.setAttribute("name", "dataValue");
         
         let time = document.createElement("input");
         time.setAttribute("type", "time");
         time.setAttribute("id","timeField");
-        time.setAttribute("name","timeField");
+        time.setAttribute("name","dataValue");
         
         let datetimeBtn = document.createElement("button");
         datetimeBtn.setAttribute("id", "datetimeBtn");
+        datetimeBtn.setAttribute("onclick", "test()");
         datetimeBtn.innerHTML = "Save value";
         
-        if (document.getElementById("datetimeField")) {
+        if (!document.getElementById("datetimeField")) {
             console.log("");
         } else {
             valueForm.appendChild(date);
@@ -179,152 +175,41 @@
         }
    }
 
-    function setTimestamp() {
+    function createTime() {
 
-        let timestamp = Date.now();
-        let date = new Date(timestamp);
+        resetParentPanel();
+        createFormTag();
 
-        let hours = date.getHours();
-        if (hours < 10 ) hours = "0" + hours;
+        let hours = document.createElement("input");
+        hours.setAttribute("type", "number");
+        hours.setAttribute("id", "hoursField");
+        hours.setAttribute("name", "dataValue");
 
-        let minutes = date.getMinutes();
-        if (minutes < 10 ) minutes = "0" + minutes;
+        let seperator =document.createElement("p");
+        seperator.innerHTML = ":";
 
-        let seconds = date.getSeconds();
-        if (seconds < 10 ) seconds = "0" + seconds;
+        let minutes = document.createElement("input");
+        minutes.setAttribute("type", "number");
+        minutes.setAttribute("id", "minutesField");
+        minutes.setAttribute("name", "dataValue");
 
-        timestamp = hours + ":" + minutes + ":" + seconds;
-        return timestamp;
+        let timeBtn = document.createElement("button");
+        timeBtn.setAttribute("id","timeBtn");
+        timeBtn.setAttribute("onclick", "getID()");
+        timeBtn.innerHTML = "Save value";
+
+        if (!document.getElementById("timeField")) {
+            console.log("timeField doesn't exsist so I create one")
+            valueForm.appendChild(hours);
+            valueForm.appendChild(seperator)
+            valueForm.appendChild(minutes);
+            valueForm.appendChild(timeBtn)
+            
+        }
+
     }
+
    
-    function createTimestamp() {
-    
-        cerateFormTag();
-        
-        let currentTimeBtn = document.creteElement("button");
-        currentTimeBtn.setAttribute("id","currentTimeBtn");
-        currentTimeBtn.setAttribute("name", "currentTimeBtn");
-        currentTimeBtn.setAttribute("onclick","setTimestamp()");
-        
-        if (document.getElementById("currentTimeBtn")) {
-            console.log("");
-        } else {
-            valueForm.appendChild(currentTimeBtn);
-        }
-   }
    
-    function createDay() {
-    
-       createFormTag();
-        
-       let day = document.createElement("input");
-       day.setAttribute("type", "number");
-       day.setAttribute("id","dayField");
-       day.setAttribute("min", "1910");
-       day.setAttribute("max", "2100");
-       day.setAttribute("value", "2022");
-       
-       let dayBtn = document.createElement("button");
-       dayBtn.setAttribute("id","dayBtn");
-       dayBtn.innerHTML = "Save Value";
-       
-       if(document.getElementById("dayField")) {
-           console.log("");
-       } else {
-           valueForm.appendChild(day);
-           valueForm.appendChild(dayBtn);
-       }
-   }
-
-    function createWeek() {
-    
-        createFormTag();
-    
-        let week = document.createElement("input");
-        week.setAttribute("type", "number");
-        week.setAttribute("id", "weekField");
-        week.setAttribute("min", "1");
-        week.setAttribute("max", "52");
-    
-    
-        let weekBtn = document.createElement("button");
-        weekBtn.setAttribute("id", "weekBtn");
-        weekBtn.innerHTML = "Save Value";
-    
-        if (document.getElementById("weekField")) {
-            console.log("");
-        } else {
-            valueForm.appendChild(week);
-            valueForm.appendChild(weekBtn);
-        }
-    }
-
-    function createMonth() {
-    
-        createFormTag();
-    
-        let month = document.createElement("input");
-        month.setAttribute("type", "number");
-        month.setAttribute("id", "monthField");
-        month.setAttribute("min", "1");
-        month.setAttribute("max", "12");
-    
-    
-        let monthBtn = document.createElement("button");
-        monthBtn.setAttribute("id", "weekBtn");
-        monthBtn.innerHTML = "Save Value";
-    
-        if (document.getElementById("monthField")) {
-            console.log("");
-        } else {
-            valueForm.appendChild(month);
-            valueForm.appendChild(monthBtn);
-        }
-    }
-
-    function createYear() {
-    
-        createFormTag();
-    
-        let year = document.createElement("input");
-        year.setAttribute("type", "number");
-        year.setAttribute("id", "yearField");
-        year.setAttribute("min", "1910");
-        year.setAttribute("max", "2100");
-    
-    
-        let yearBtn = document.createElement("button");
-        myearBtn.setAttribute("id", "yearBtn");
-        yearBtn.innerHTML = "Save Value";
-    
-        if (document.getElementById("yearField")) {
-            console.log("");
-        } else {
-            valueForm.appendChild(year);
-            valueForm.appendChild(yearBtn);
-        }
-    } 
-    
-    
-    function createBoolean() {
-        
-        createFormTag();
-        
-        let boolean = document.createElement("input");
-        
-        boolean.setAttribute("type","checkbox");
-        boolean.setAttribute("id","booleanField");
-        boolean.setAttribute("name","booleanField");
-        
-        let booleanBtn = document.createElement("button");
-        booleanBtn.setAttribute("id", "booleanFieldBtn");
-        booleanBtn.innerHTML = "Save value";
-        
-        if (document.getElementById("booleanField")) {
-            console.log("");
-        } else {
-            valueForm.appendChild(boolean);
-            valueForm.appendChild(booleanBtn);
-        }
-    }
    
+    

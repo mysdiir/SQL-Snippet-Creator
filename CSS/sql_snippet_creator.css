@@ -5,25 +5,30 @@
   grid-auto-flow: row;
   grid-template-areas:
     ". . . . . . . ."
-    ". dbTablePanel dbTablePanel dbTablePanel dbTablePanel dbTablePanel dbSettings ."
-    ". dbTablePanel dbTablePanel dbTablePanel dbTablePanel dbTablePanel dbSettings ."
-    ". valuePanel valuePanel valuePanel sqlOutput sqlOutput sqlOutput ."
-    ". valuePanel valuePanel valuePanel sqlOutput sqlOutput sqlOutput ."
-    ". resultTablePanel resultTablePanel resultTablePanel snippetPanel snippetPanel snippetPanel ."
-    ". resultTablePanel resultTablePanel resultTablePanel snippetPanel snippetPanel snippetPanel ."
+    ". datatypePanel datatypePanel datatypePanel datatypePanel datatypePanel settingsPanel ."
+    ". datatypePanel datatypePanel datatypePanel datatypePanel datatypePanel settingsPanel ."
+    ". valuePanel valuePanel valuePanel snippetPanel snippetPanel snippetPanel ."
+    ". valuePanel valuePanel valuePanel snippetPanel snippetPanel snippetPanel ."
+    ". previewPanel previewPanel previewPanel processingPanel processingPanel processingPanel ."
+    ". previewPanel previewPanel previewPanel processingPanel processingPanel processingPanel ."
     ". . . . . . . .";
     width: 100vw;
     height: 100vh;
 }
 
-.dbTablePanel {
-  grid-area: dbTablePanel;
+.datatypePanel {
+  grid-area: datatypePanel;
   width: 100%;
   height: 100%;
   overflow: scroll;
   overflow-y: hidden;
   background-color: lightblue;
   display: flex;
+}
+
+.settingsPanel {
+  grid-area: settingsPanel;
+  background-color: lightcoral;
 }
 
 .valuePanel {
@@ -33,31 +38,34 @@
   background-color: lightgoldenrodyellow;
 }
 
-.sqlOutput {
-  grid-area: sqlOutput;
-  width: 100%;
-  height: 100%;
-  background-color: lightsalmon;
-}
-
-.resultTablePanel {
-  grid-area: resultTablePanel;
-  width: 100%;
-  height: 100%;
-  background-color: lightcyan;
+.previewPanel {
+  grid-area: previewPanel;
+  overflow: scroll;
+  overflow-y: scroll;
+  background-color: lightseagreen;
+  display: flex;
 }
 
 .snippetPanel {
   grid-area: snippetPanel;
   width: 100%;
   height: 100%;
-  background-color: lightgreen;
+  background-color: lightsalmon;
 }
 
-.dbSettings {
-  grid-area: dbSettings;
-  background-color: lightcoral;
+.processingPanel {
+  grid-area: processingPanel;
+  width: 100%;
+  height: 100%;
+  background-color: coral;
 }
+
+
+
+
+
+
+
 
 .columnNameTable {
   display: block;
@@ -68,6 +76,8 @@
 
 .tableSubContainer {
   background-color: lightgreen;
+  width: auto;
+  height: auto;
   border: 1px solid black;
 
 }
@@ -75,5 +85,9 @@
 .datatypeTable {
   display: block;
   background-color: lightseagreen;
+  border: 1px solid black;
+}
+
+td {
   border: 1px solid black;
 }
