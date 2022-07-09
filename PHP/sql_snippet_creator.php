@@ -9,10 +9,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="datatypePanel">
+        <div class="dataPanel">
           
             <?php
                 include_once("Database.php");
+                
 
                 if (isset($_POST['host']) && isset($_POST['user']) && isset($_POST['db']) &&
                     isset($_POST['port']) && isset($_POST['table'] )) {
@@ -30,9 +31,12 @@
                     $database->setConn($host, $user, $password);
                     $database->fetchColumnsAndPlaceInTable($host, $user, $password, $table, $db);
                     
+                    
                 }
             ?>
         </div>
+
+        
         <div class="settingsPanel">
             <form action="" method="post">
                 <input type="text" placeholder="host" name="host" id="host" value="localhost">
@@ -44,10 +48,39 @@
                 <button name="button1">set settings</button>
             </form>
         </div>
-        <div class="valuePanel" id="valuePanel">
-            <div id="valueContainer"></div>
+
+        
+        <div class="snippetPanel" id="valuePanel">
+            <?php
+            include_once("Database.php");
+
+            $newObject = new Database($_POST['host'], $_POST['user'], $_POST['password'],
+                $_POST['db'], $_POST['table'], $_POST['port']);
+
+            $host = $newObject->getHost();
+            $user = $newObject->getUser();
+            $password = $newObject->getPassword();
+            $db = $newObject->getDb();
+            $table = $newObject->getTable();
+            $port = $newObject->getPort();
+            
+            
+            $newObject->generateSnippet($host, $user, $password, $table, $db);
+
+
+            
+            
+            ?>
          </div>
-        <div class="snippetPanel" id="sqlOutput"></div>
+        
+        
+        
+        <div class="executionPanel" id="sqlOutput">
+            <button>Save to clipboard</button>
+            <button>Upload to database</button>
+        </div>
+        
+        
         <div class="previewPanel">
 
             <?php
@@ -57,14 +90,12 @@
             isset($_POST['port']) && isset($_POST['table'] )) {
 
                 $database->fetchDynamicTable($host, $user, $password, $table, $db);
-                $database->saveColumnNamesToJSON($host, $user, $password, $db, $port, $table);
-
+                $columnNameArray;
+                
             }
             ?>
         </div>
-        <div class="processingPanel"></div>
    </div>
-    <script src="../JS/datatypePanelCreation.js"></script>
-    <script src="../JS/DataProcessing.js"></script>
+
 </body>
 </html>

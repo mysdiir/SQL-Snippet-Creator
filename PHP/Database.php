@@ -9,6 +9,10 @@ class Database
     private $table;
     private $port;
 
+    private $columnTitle;
+    private $datatype;
+    private $dataValue;
+
     function __construct($host, $user, $password, $db, $table, $port) {
 
         $this->host = $host;
@@ -45,7 +49,34 @@ class Database
     }
 
 
-    function setConn($host, $user, $password)
+
+    public function getColumnTitle() {
+        return $this->columnTitle;
+    }
+
+    public function getDatatype() {
+
+        $datatype = array();
+
+        $conn = new mysqli($host, $user, $password, $db, $port);
+
+        $sql = "SHOW COLUMNS FROM" . $db . $table;
+        $result = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_array($result)) {
+            array_push($datatype, $row['Type']);
+        }
+
+        return $datatype;
+    }
+
+    public function getDataValue() {
+        return $this->dataValue;
+    }
+
+
+
+    // settings method
+    public function setConn($host, $user, $password)
     {
         $conn = mysqli_connect($host, $user, $password);
 
@@ -55,7 +86,22 @@ class Database
         return $conn;
     }
 
-    function fetchColumns($host, $user, $password, $db, $port, $table)
+
+    // fetching methods
+    public function fetchColumnNames($host, $user, $password, $table, $db)
+    {
+        $columnNames = array();
+
+        $sql = "SHOW COLUMNS FROM " . $db . "." . $table;
+        $result = mysqli_query($this->setConn($host, $user, $password), $sql);
+        while ($row = mysqli_fetch_array($result, 2)) {
+            array_push($columnNames, $row[0]);
+        }
+
+        return $columnNames;
+    }
+
+    public function fetchColumns($host, $user, $password, $db, $port, $table)
     {
         $columns = array();
 
@@ -70,8 +116,17 @@ class Database
         return $columns;
     }
 
-    function fetchColumnsAndPlaceInTable($host, $user, $password, $table, $db)
+    // isert methods
+    public function insertValuesToDB() {
+
+    }
+
+    // datatype panel
+    public function fetchColumnsAndPlaceInTable($host, $user, $password, $table, $db)
     {
+
+        $columnTitles = array();
+        $columnTitles = $this->fetchColumnNames($host, $user, $password, $table, $db);
 
         $sql = "SHOW COLUMNS FROM " . $db . "." . $table;
         $result = mysqli_query($this->setConn($host, $user, $password), $sql);
@@ -90,56 +145,98 @@ class Database
 
                            needed method for fetching, needed parameters to prepare fetch
         mysqli_fetch_assoc(mysqli_result $result) -> fetches one row on the given sql in an associative array
-
          */
         while ($row = mysqli_fetch_array($result)) {
 
             echo("<div class='tableSubContainer'>");
-            echo("<table>");
-            echo("<tr>");
-            echo("<td class='columnNameTable' id='" . $row['Field'] . "'>" . $row['Field'] . "</td>");
-            echo("</tr>");
-            echo("<tr>");
-            echo ("<td>" . "<button id='" . $row['Field'] . "_BTN' onclick='setUpDataValuePanel()'>"
-                . $row['Type'] . " </button>" . "</td>");
-            echo("</tr>");
-            echo("</table>");
+
+                echo("<table>");
+                    echo("<tr>");
+                      echo("<td class='columnNameTable' id='" . $row['Field'] .
+                            "' name='". $row['Field'] . "'>" . $row['Field'] . "</td>");
+                    echo("</tr>");
+                    echo("<tr>");
+                      echo ("<td>" . "<button id='" . $row['Field'] . "_BTN'>"
+                           . $row['Type'] . " </button>" . "</td>");
+                      echo("</tr>");
+                echo("</table>");
+
+                $datatype = $row['Type'];
+                if (str_contains($datatype, "int")) {
+                    echo("<div>");
+                    echo "<input type='number' name='input_" . $row['Field'] . "'></input>";
+                    echo "<button>Confirm value</button>";
+                    echo("</div>");
+                };
+
+                if (str_contains($datatype, "varchar")) {
+                    echo("<div>");
+                    echo "<input name='input_" . $row['Field'] . "'></input>";
+                    echo "<button>Confirm value</button>";
+                    echo("</div>");
+                };
+
+                if (str_contains($datatype, "date")) {
+                    echo("<div>");
+                    echo "<input type='date' name='input_" . $row['Field'] . "'></input>";
+                    echo "<button>Confirm value</button>";
+                    echo("</div>");
+                };
+
+
             echo("</div>");
         }
 
 
     }
 
-    function fetchColumnNames($host, $user, $password, $table, $db)
-    {
+
+
+
+
+    // value panel
+    public function createDataValuePanel() {
+        
+    }
+    
+    // snippet panel
+    public function generateSnippet($host, $user, $password, $table, $db) {
         $columnNames = array();
+        $columnNames = $this->fetchColumnNames($host, $user, $password, $table, $db);
 
-        $sql = "SHOW COLUMNS FROM " . $db . "." . $table;
-        $result = mysqli_query($this->setConn($host, $user, $password), $sql);
-        while ($row = mysqli_fetch_array($result, 2)) {
-            array_push($columnNames, $row[0]);
+        $sql =  "INSERT INTO " . $db . "." . $table . "(";
+
+        echo $sql;
+
+        for($i = 0; $i < count($columnNames); $i++) {
+            //if ($i = count($columnNames) - 1 ) {
+            //    echo $columnNames[$i];
+           // }
+            echo $columnNames[$i] . ",";
+
         }
+        echo ")";
+        echo " VALUES (";
 
-        return $columnNames;
+
     }
 
-    function fetchDynamicTable($host, $user, $password, $table, $db)
+    
+    // preview panel
+    public function fetchDynamicTable($host, $user, $password, $table, $db)
     {
         // fetch columnTitle in numeric array
         $columnTitles = $this->fetchColumnNames($host, $user, $password, $table, $db);
-        echo json_encode($columnTitles);
         // outer loop for printing column titles
         for ($i = 0; $i < count($columnTitles); $i++) {
 
-
-
             echo("<div>");
-            echo("<table class='tableSubContainer'>");
-            echo("<tr>");
-            echo("<th class='columnNameTable'>");
-            print_r($columnTitles[$i]);
-            echo("</th>");
-            echo("<tr>");
+                echo("<table class='tableSubContainer'>");
+                    echo("<tr>");
+                        echo("<th class='columnNameTable'>");
+                        print_r($columnTitles[$i]);
+                        echo("</th>");
+                    echo("</tr>");
 
 
             // new sql query for fetching values of columns and oder them desc
@@ -153,36 +250,22 @@ class Database
                 for ($j = 0; $j < count($columnValues); $j++) {
 
                     echo("<tr>");
-                    echo("<td>");
-                    if ($columnValues[$j] == "") print_r("null");
-                    else print_r($columnValues[$j]);
-                    echo("</td>");
+                        echo("<td>");
+                            if ($columnValues[$j] == "") print_r("null");
+                            else print_r($columnValues[$j]);
+                        echo("</td>");
                     echo("</tr>");
 
                 }
 
             }
-            echo("</table>");
+                echo("</table>");
             echo("</div>");
 
         }
-        echo("<button id='confirmSnippetBtn'>Save query</button>");
+
 
     }
-
-
-    function saveColumnNamesToJSON($host, $user, $password, $db, $port, $table) {
-        $sql = "SHOW COLUMNS FROM " . $db . "." . $table;
-        $result = mysqli_query($this->setConn($host, $user, $password), $sql);
-        $row = mysqli_fetch_array($result);
-        json_encode($row);
-        echo("test");
-    }
-
-
-
-
-
 
 }
 ?>
