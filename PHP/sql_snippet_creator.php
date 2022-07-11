@@ -10,11 +10,9 @@
 <body>
     <div class="container">
         <div class="dataPanel">
-          
             <?php
                 include_once("Database.php");
                 
-
                 if (isset($_POST['host']) && isset($_POST['user']) && isset($_POST['db']) &&
                     isset($_POST['port']) && isset($_POST['table'] )) {
                     
@@ -68,8 +66,6 @@
             $newObject->generateSnippet($host, $user, $password, $table, $db);
 
 
-            
-            
             ?>
          </div>
         
@@ -80,6 +76,9 @@
             <button>Upload to database</button>
         </div>
         
+        <div class="dataPreviewPanel" id="dataPreviewPanel">
+            
+        </div>
         
         <div class="previewPanel">
 
@@ -96,6 +95,6 @@
             ?>
         </div>
    </div>
-
+    <script src="../JS/datavalues.js" defer></script>
 </body>
 </html>

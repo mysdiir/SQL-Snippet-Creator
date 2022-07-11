@@ -7,8 +7,8 @@
     ". . . . . . . ."
     ". dataPanel dataPanel dataPanel dataPanel settingsPanel settingsPanel ."
     ". dataPanel dataPanel dataPanel dataPanel settingsPanel settingsPanel ."
-    ". dataPanel dataPanel dataPanel dataPanel snippetPanel snippetPanel ."
-    ". dataPanel dataPanel dataPanel dataPanel executionPanel executionPanel ."
+    ". dataPreviewPanel dataPreviewPanel dataPreviewPanel dataPreviewPanel executionPanel executionPanel ."
+    ". snippetPanel snippetPanel snippetPanel snippetPanel snippetPanel snippetPanel ."
     ". previewPanel previewPanel previewPanel previewPanel previewPanel previewPanel ."
     ". previewPanel previewPanel previewPanel previewPanel previewPanel previewPanel ."
     ". . . . . . . .";
@@ -37,6 +37,16 @@
   height: 100%;
   background-color: lightsalmon;
 
+}
+
+.dataPreviewPanel {
+  grid-area: dataPreviewPanel;
+  width: 100%;
+  height: 100%;
+  background-color: darkseagreen;
+  overflow: scroll;
+  overflow-y: hidden;
+  display: flex;
 }
 
 .executionPanel {

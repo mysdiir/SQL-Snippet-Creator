@@ -148,7 +148,7 @@ class Database
          */
         while ($row = mysqli_fetch_array($result)) {
 
-            echo("<div class='tableSubContainer'>");
+            echo("<div id='".  $row['Field'] . "_container' class='tableSubContainer'>");
 
                 echo("<table>");
                     echo("<tr>");
@@ -164,22 +164,22 @@ class Database
                 $datatype = $row['Type'];
                 if (str_contains($datatype, "int")) {
                     echo("<div>");
-                    echo "<input type='number' name='input_" . $row['Field'] . "'></input>";
-                    echo "<button>Confirm value</button>";
+                    echo "<input type='number' id='input_" . $row['Field'] . "' name='input_" . $row['Field'] . "'></input>";
+                    echo "<button id='btn_". $row['Field'] . "' onclick='passValue()'>Confirm value</button>";
                     echo("</div>");
                 };
 
                 if (str_contains($datatype, "varchar")) {
                     echo("<div>");
-                    echo "<input name='input_" . $row['Field'] . "'></input>";
-                    echo "<button>Confirm value</button>";
+                    echo "<input id='input_" . $row['Field'] . "' name='input_" . $row['Field'] . "'></input>";
+                    echo "<button id='btn_". $row['Field'] . "' onclick='passValue()'>Confirm value</button>";
                     echo("</div>");
                 };
 
                 if (str_contains($datatype, "date")) {
                     echo("<div>");
-                    echo "<input type='date' name='input_" . $row['Field'] . "'></input>";
-                    echo "<button>Confirm value</button>";
+                    echo "<input type='date' id='input_" . $row['Field'] . "' name='input_" . $row['Field'] . "'></input>";
+                    echo "<button id='btn_". $row['Field'] . "' onclick='passValue()'>Confirm value</button>";
                     echo("</div>");
                 };
 
